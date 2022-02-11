@@ -1,9 +1,10 @@
-import React, { useDebugValue, useState } from "react";
+import React, { useState } from "react";
+import { IColumnLayoutProps } from "../types";
 import { useDispatch } from "react-redux";
 import { StoreDispatch } from "../redux/store";
 
 import Box from "@mui/material/Box";
-
+import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Collapse from "@mui/material/Collapse";
@@ -11,13 +12,16 @@ import Alert from "@mui/material/Alert";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
-const ColumnLayout: React.FC<{
-  addHandler: any;
-  selectorState: any;
-}> = ({ addHandler, selectorState }) => {
+const ColumnLayout: React.FC<IColumnLayoutProps> = ({
+  addHandler,
+  removeHandler,
+  selectorState,
+}) => {
   const dispatch = useDispatch<StoreDispatch>();
 
   const [textDescription, setTextDescription] = useState("");
@@ -45,9 +49,13 @@ const ColumnLayout: React.FC<{
       setTextDescription("");
     }
   };
-
+  console.log("ch", selectorState);
   return (
-    <Box borderRadius={1} width="100%" sx={{ boxShadow: 2, p: 3 }}>
+    <Box
+      borderRadius={3}
+      width="100%"
+      sx={{ boxShadow: 2, p: 3, bgcolor: "#edf2ff" }}
+    >
       <TextField
         fullWidth
         label="Outlined"
@@ -76,7 +84,49 @@ const ColumnLayout: React.FC<{
         </Button>
       </Box>
 
-      <List sx={{ minHeight: "300px" }}>a</List>
+      <List sx={{ minHeight: "500px" }}>
+        {selectorState.map(
+          ({ id, text, isFinished, createdAt, updatedAt }, index: number) => {
+            return (
+              <ListItem
+                sx={{
+                  position: "relative",
+                  bgcolor: "#fff",
+                  my: 3,
+                  borderRadius: 2,
+                }}
+              >
+                <ListItemText
+                  sx={{
+                    textDecoration: isFinished ? "line-through" : "none",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  <Box width="100%">{text}</Box>
+
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    fontSize=".7rem"
+                  >
+                    <Grid item xs={10}>
+                      {updatedAt ? "Updated" : "Created"} at:{" "}
+                      {updatedAt || createdAt}
+                    </Grid>
+                    <Grid item xs={2}>
+                      <IconButton onClick={() => dispatch(removeHandler(id))}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </ListItemText>
+              </ListItem>
+            );
+          }
+        )}
+      </List>
     </Box>
   );
 };

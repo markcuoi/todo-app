@@ -6,12 +6,16 @@ import ColumnLayout from "../ColumnLayout";
 
 export function ToDoColumn() {
   const { todo } = useSelector((state: StoreState) => state);
-  const { add } = todoSlice;
+  const { add, remove } = todoSlice;
 
   return (
     <>
       <Typography mb={3}>All todo tasks: {todo.length}</Typography>
-      <ColumnLayout addHandler={add} selectorState={todo} />
+      <ColumnLayout
+        addHandler={add}
+        removeHandler={remove}
+        selectorState={todo}
+      />
     </>
   );
 }

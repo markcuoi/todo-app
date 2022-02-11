@@ -2,6 +2,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { ToDoColumn } from "./components/columns/ToDo";
+import { InProgressColumn } from "./components/columns/InProgress";
+import { DoneColumn } from "./components/columns/Done";
 
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
@@ -17,10 +19,10 @@ function App() {
             <ToDoColumn />
           </Grid>
           <Grid item md={4}>
-            {/* <InProgressColumn /> */}
+            <InProgressColumn />
           </Grid>
           <Grid item md={4}>
-            {/* <DoneColumn /> */}
+            <DoneColumn />
           </Grid>
         </DragDropContext>
       </Grid>

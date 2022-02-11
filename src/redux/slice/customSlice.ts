@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { TActionSlice, TUpdateTextShowed, IModel } from "../../types";
+import { IModel } from "../../types";
 
 const initialState: IModel[] = [];
 
@@ -23,12 +23,18 @@ export const createCustomSlice = (name: string) => {
           },
         }),
       },
+
+      remove(state, action: PayloadAction<string>) {
+        const index = state.findIndex(({ id }) => id === action.payload);
+        state.splice(index, 1);
+      },
     },
   });
 
-  const { add } = actions;
+  const { add, remove } = actions;
   return {
     add,
+    remove,
     reducer,
   };
 };
