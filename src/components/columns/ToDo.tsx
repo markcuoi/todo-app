@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import { StoreState } from "../../redux/store";
 import { todoSlice } from "../../redux/slice/todo";
@@ -10,11 +9,12 @@ export function ToDoColumn() {
 
   return (
     <>
-      <Typography mb={3}>All todo tasks: {todo.length}</Typography>
       <ColumnLayout
+        category="To do"
         addHandler={add}
         removeHandler={remove}
         selectorState={todo}
+        droppableId="todo"
       />
     </>
   );

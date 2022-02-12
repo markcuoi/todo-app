@@ -28,13 +28,28 @@ export const createCustomSlice = (name: string) => {
         const index = state.findIndex(({ id }) => id === action.payload);
         state.splice(index, 1);
       },
+
+      update(state, action) {
+        state.splice(
+          action.payload.destination.index,
+          0,
+          action.payload.filterState
+        );
+      },
+
+      reorder(state, action) {
+        const [removed] = state.splice(action.payload.source.index, 1);
+        state.splice(action.payload.destination.index, 0, removed);
+      },
     },
   });
 
-  const { add, remove } = actions;
+  const { add, remove, update, reorder } = actions;
   return {
     add,
     remove,
     reducer,
+    update,
+    reorder,
   };
 };

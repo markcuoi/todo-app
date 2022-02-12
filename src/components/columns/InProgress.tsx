@@ -10,12 +10,13 @@ export function InProgressColumn() {
 
   return (
     <>
-      <Typography mb={3}>All inProgress tasks: {inProgress?.length}</Typography>
       <ColumnLayout
         // labelText="Type 'in progress' item"
+        category="In progress"
         addHandler={add}
         removeHandler={remove}
         selectorState={inProgress}
+        droppableId="inProgress"
       />
     </>
   );

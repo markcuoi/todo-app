@@ -10,12 +10,13 @@ export function DoneColumn() {
 
   return (
     <>
-      <Typography mb={3}>All done tasks: {done.length}</Typography>
       <ColumnLayout
         // labelText="Type 'done' item"
+        category="Completed"
         removeHandler={remove}
         addHandler={add}
         selectorState={done}
+        droppableId="done"
       />
     </>
   );

@@ -18,9 +18,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
 const ColumnLayout: React.FC<IColumnLayoutProps> = ({
+  category,
   addHandler,
   removeHandler,
   selectorState,
+  droppableId,
 }) => {
   const dispatch = useDispatch<StoreDispatch>();
 
@@ -54,13 +56,27 @@ const ColumnLayout: React.FC<IColumnLayoutProps> = ({
     <Box
       borderRadius={3}
       width="100%"
-      sx={{ boxShadow: 2, p: 3, bgcolor: "#edf2ff" }}
+      sx={{ boxShadow: 2, p: 2, bgcolor: "#e7f5ff" }}
     >
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        fontSize="1.4"
+        fontWeight={600}
+        mb={2}
+      >
+        <Grid item>{category}</Grid>
+        <Grid item>{selectorState.length}</Grid>
+      </Grid>
+
       <TextField
         fullWidth
         label="Outlined"
         variant="outlined"
         size="small"
+        sx={{ bgcolor: "#e9ecef" }}
         value={textDescription}
         onChange={handleOnChange}
       />
@@ -84,49 +100,79 @@ const ColumnLayout: React.FC<IColumnLayoutProps> = ({
         </Button>
       </Box>
 
-      <List sx={{ minHeight: "500px" }}>
-        {selectorState.map(
-          ({ id, text, isFinished, createdAt, updatedAt }, index: number) => {
-            return (
-              <ListItem
-                sx={{
-                  position: "relative",
-                  bgcolor: "#fff",
-                  my: 3,
-                  borderRadius: 2,
-                }}
-              >
-                <ListItemText
-                  sx={{
-                    textDecoration: isFinished ? "line-through" : "none",
-                    wordBreak: "break-word",
-                  }}
-                >
-                  <Box width="100%">{text}</Box>
+      <Droppable droppableId={droppableId}>
+        {(provided) => (
+          <List
+            sx={{ minHeight: "500px" }}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {selectorState.map(
+              (
+                { id, text, isFinished, createdAt, updatedAt },
+                index: number
+              ) => {
+                return (
+                  <Draggable key={id} draggableId={id} index={index}>
+                    {(provided, snapshot) => (
+                      <ListItem
+                        sx={{
+                          transition: ".3s ease background-color",
+                          color: snapshot.isDragging ? "#fff" : "#000",
+                          bgcolor: snapshot.isDragging ? "#000" : "#fff",
 
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    fontSize=".7rem"
-                  >
-                    <Grid item xs={10}>
-                      {updatedAt ? "Updated" : "Created"} at:{" "}
-                      {updatedAt || createdAt}
-                    </Grid>
-                    <Grid item xs={2}>
-                      <IconButton onClick={() => dispatch(removeHandler(id))}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </ListItemText>
-              </ListItem>
-            );
-          }
+                          position: "relative",
+                          border: "1px solid #989898",
+
+                          mt: 1,
+                          mb: 2,
+                          borderRadius: 2,
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <ListItemText
+                          sx={{
+                            textDecoration: isFinished
+                              ? "line-through"
+                              : "none",
+                            wordBreak: "break-word",
+                          }}
+                        >
+                          <Box width="100%">{text}</Box>
+
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            fontSize=".7rem"
+                          >
+                            <Grid item xs={10}>
+                              {updatedAt ? "Updated" : "Created"} at:{" "}
+                              {updatedAt || createdAt}
+                            </Grid>
+                            <Grid item xs={2}>
+                              <IconButton
+                                onClick={() => dispatch(removeHandler(id))}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Grid>
+                          </Grid>
+                        </ListItemText>
+                      </ListItem>
+                    )}
+                  </Draggable>
+                );
+              }
+            )}
+          </List>
         )}
-      </List>
+      </Droppable>
     </Box>
   );
 };

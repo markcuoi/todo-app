@@ -13,11 +13,12 @@ export type TActionSlice = Omit<IModel, "text">;
 export type TUpdateTextShowed = Omit<TActionSlice, "isFinished">;
 
 export interface IColumnLayoutProps {
+  category: string;
   // labelText?: string;
   addHandler: (v: string) => AnyAction;
   removeHandler: (v: string) => AnyAction;
   // completedHandler: (v: TActionSlice) => AnyAction;
   selectorState: IModel[];
-  // droppableId: string;
+  droppableId: string;
   // updateTextShowed: (v: TUpdateTextShowed) => AnyAction;
 }
