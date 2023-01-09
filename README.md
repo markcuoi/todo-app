@@ -1,6 +1,6 @@
 # Todo App
 
-A simple todo app
+A simple todo app (WIP)
 
 
 ## Deployment
