@@ -1,6 +1,6 @@
-# Alice Restaurent
+# Todo App
 
-A simple todo
+A simple todo app
 
 
 ## Deployment
